@@ -21,7 +21,7 @@ jobs:
         run: |
           set -e
 
-          FILE="commit_number.md"
+          FILE="README.md"
           echo "Checking for file: $FILE"
 
           if [ ! -f "$FILE" ]; then
