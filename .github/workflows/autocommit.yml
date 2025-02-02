@@ -2,7 +2,7 @@ name: Jaymar921 auto commit
 
 on:
   schedule:
-    - cron: "* * * * *" # Run every minute
+    - cron: "*/5 * * * *" # Run every 5 minutes
 
 jobs:
   commit:
@@ -53,6 +53,8 @@ jobs:
 
           echo "Pushing changes..."
           git push
+
+          echo "Current date and time: $(date +"%Y-%m-%d %H:%M:%S")"
         shell: bash
         env:
           USERNAME: ${{ secrets.USERNAME }}
