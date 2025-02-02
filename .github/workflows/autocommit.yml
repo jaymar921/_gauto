@@ -49,7 +49,7 @@ jobs:
           git add "$FILE" || echo "Nothing to stage"
 
           echo "Committing changes..."
-          git commit -m "Auto commit: updated commit number $CURRENT_COUNT" --allow-empty
+          git commit -m "Auto commit: updated commit number $((CURRENT_COUNT + 1))" --allow-empty
 
           echo "Pushing changes..."
           git push
