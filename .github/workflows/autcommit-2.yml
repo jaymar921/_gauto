@@ -45,6 +45,9 @@ jobs:
           git config --global user.name "$USERNAME"
           git config --global user.email "$EMAIL"
 
+          echo "Pulling changes..."
+          git pull
+
           echo "Staging changes..."
           git add "$FILE" || echo "Nothing to stage"
 
