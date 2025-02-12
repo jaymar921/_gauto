@@ -1,0 +1,61 @@
+name: Jaymar921 auto commit - 2
+
+on:
+  schedule:
+    - cron: "*/2 * * * *" # Run every 2 minutes
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Ensure full history is available
+
+      - name: Switch to main branch
+        run: git checkout main
+
+      - name: Create file and commit
+        run: |
+          set -e
+
+          FILE=".github/README.md"
+          echo "Checking for file: $FILE"
+
+          if [ ! -f "$FILE" ]; then
+            echo "File not found, creating $FILE..."
+            echo "# Git Auto Commit" > "$FILE"
+            echo "Just for fun and keeping my daily git commit active 🤪" > "$FILE"
+            echo "commit number: 1" >> "$FILE"
+          else
+            echo "File exists. Updating commit number..."
+            CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE" || echo "0")
+            echo "Current commit number: $CURRENT_COUNT"
+            NEXT_COUNT=$((CURRENT_COUNT + 1))
+            sed -i "/commit number: /c\commit number: $NEXT_COUNT" "$FILE"
+            echo "Updated commit number to: $NEXT_COUNT"
+          fi
+
+          echo "Contents of the file:"
+          cat "$FILE"
+
+          echo "Configuring Git..."
+          git config --global user.name "$USERNAME"
+          git config --global user.email "$EMAIL"
+
+          echo "Staging changes..."
+          git add "$FILE" || echo "Nothing to stage"
+
+          echo "Committing changes..."
+          git commit -m "Auto commit: updated commit number $((CURRENT_COUNT + 1)) for workflow file" --allow-empty
+
+          echo "Pushing changes..."
+          git push
+
+          echo "Current date and time: $(date +"%Y-%m-%d %H:%M:%S")"
+        shell: bash
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          EMAIL: ${{ secrets.EMAIL }}
