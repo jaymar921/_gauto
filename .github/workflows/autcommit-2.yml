@@ -21,7 +21,7 @@ jobs:
         run: |
           set -e
 
-          FILE=".github/README.md"
+          FILE=".github/FILE.md"
           echo "Checking for file: $FILE"
 
           if [ ! -f "$FILE" ]; then
