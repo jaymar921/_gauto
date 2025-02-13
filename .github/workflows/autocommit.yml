@@ -21,7 +21,7 @@ jobs:
         run: |
           set -e
           
-          FILES=(".github/FILE.md" "README.md")  # List of files to update
+          FILES=(".github/FILE.md" "README.md" ".github/FILE_2.md" ".github/FILE_3.md")  # List of files to update
           COMMIT_LOOP_COUNT=55
 
           echo "Configuring Git..."
