@@ -31,12 +31,13 @@ jobs:
           echo "Pulling latest changes to ensure we start with the latest commit..."
           git pull --rebase
 
-          for ((i=1; i<=COMMIT_LOOP_COUNT; i++)); do
-            echo "Iteration $i of $COMMIT_LOOP_COUNT"
+          
 
-            for FILE in "${FILES[@]}"; do
-              echo "Checking for file: $FILE"
+          for FILE in "${FILES[@]}"; do
+            echo "Checking for file: $FILE"
 
+            for ((i=1; i<=COMMIT_LOOP_COUNT; i++)); do
+              echo "Iteration $i of $COMMIT_LOOP_COUNT"
               if [ ! -f "$FILE" ]; then
                 echo "File not found, creating $FILE..."
                 echo "# Git Auto Commit | Hidden File" > "$FILE"
@@ -59,16 +60,16 @@ jobs:
 
               echo "Staging changes..."
               git add "$FILE"
+              
+              echo "Committing changes..."
+              git commit -m "Auto commit ($FILE): updated commit number $NEXT_COUNT" --allow-empty
+
+              echo "Pushing changes..."
+              git push
+
+              echo "Sleeping for 2 seconds before next commit..."
+              sleep 2
             done
-
-            echo "Committing changes..."
-            git commit -m "Auto commit: updated commit number $NEXT_COUNT" --allow-empty
-
-            echo "Pushing changes..."
-            git push
-
-            echo "Sleeping for 2 seconds before next commit..."
-            sleep 2
           done
 
           echo "All commits completed successfully!"
