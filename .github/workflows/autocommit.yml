@@ -67,7 +67,7 @@ jobs:
               echo "Pushing changes..."
               git push
 
-              echo "Sleeping for 2 seconds before next commit..."
+              echo "Sleeping for 1 seconds before next commit..."
               sleep 1
             done
           done
