@@ -21,7 +21,7 @@ jobs:
         run: |
           set -e
           
-          FILE="README.md"
+          FILE=".github/FILE.md"
           COMMIT_LOOP_COUNT=5  # Change this value to the number of commits you want in one run
 
           echo "Configuring Git..."
