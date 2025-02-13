@@ -21,11 +21,15 @@ jobs:
         run: |
           set -e
           
-          FILE="README.md"
-          COMMIT_LOOP_COUNT=30  
+          FILE=".github/FILE.md"
+          COMMIT_LOOP_COUNT=50
+
           echo "Configuring Git..."
           git config --global user.name "$USERNAME"
           git config --global user.email "$EMAIL"
+
+          echo "Ensuring clean working directory..."
+          git reset --hard origin/main  # Force sync to remote state
 
           for ((i=1; i<=COMMIT_LOOP_COUNT; i++)); do
             echo "Iteration $i of $COMMIT_LOOP_COUNT"
@@ -33,8 +37,11 @@ jobs:
             echo "Checking for file: $FILE"
             if [ ! -f "$FILE" ]; then
               echo "File not found, creating $FILE..."
-              echo "# Git Auto Commit" > "$FILE"
-              echo "Just for fun and keeping my daily git commit active 🤪" > "$FILE"
+              echo "# Git Auto Commit | Hidden File" > "$FILE"
+              echo "This file was added $(date +"%b %d, %Y")" >> "$FILE"
+              echo "" >> "$FILE"
+              echo "Just for fun and keeping my daily git commit active 🤪" >> "$FILE"
+              echo "" >> "$FILE"
               echo "commit number: 1" >> "$FILE"
             else
               echo "File exists. Updating commit number..."
@@ -48,20 +55,21 @@ jobs:
             echo "Contents of the file:"
             cat "$FILE"
 
-            echo "Pulling latest changes..."
-            git pull --rebase
-
             echo "Staging changes..."
             git add "$FILE"
 
             echo "Committing changes..."
             git commit -m "Auto commit: updated commit number $NEXT_COUNT" --allow-empty
 
+            echo "Forcing pull to avoid conflicts..."
+            git fetch origin main
+            git reset --hard origin/main  # Ensures we're always in sync
+
             echo "Pushing changes..."
             git push
 
             echo "Sleeping for 5 seconds before next commit..."
-            sleep 5 
+            sleep 5
           done
 
           echo "All commits completed successfully!"
