@@ -22,7 +22,7 @@ jobs:
           set -e
           
           FILE=".github/FILE.md"
-          COMMIT_LOOP_COUNT=5  # Change this value to the number of commits you want in one run
+          COMMIT_LOOP_COUNT=20
 
           echo "Configuring Git..."
           git config --global user.name "$USERNAME"
@@ -61,8 +61,8 @@ jobs:
             echo "Pushing changes..."
             git push
 
-            echo "Sleeping for 10 seconds before next commit..."
-            sleep 10  # Wait for 10 seconds before next iteration
+            echo "Sleeping for 3 seconds before next commit..."
+            sleep 3
           done
 
           echo "All commits completed successfully!"
