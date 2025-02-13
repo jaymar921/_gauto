@@ -2,7 +2,7 @@ name: Jaymar921 auto commit
 
 on:
   schedule:
-    - cron: "*/2 * * * *" # Run every 2 minutes
+    - cron: "* * * * *" # Run every 2 minutes
 
 jobs:
   commit:
