@@ -59,7 +59,7 @@ jobs:
             git add "$FILE"
 
             echo "Committing changes..."
-            git commit -m "Auto commit: updated commit number $NEXT_COUNT" --allow-empty
+            git commit -m "Workflow Auto commit: $NEXT_COUNT" --allow-empty
 
             echo "Pushing changes..."
             git push
