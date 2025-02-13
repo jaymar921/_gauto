@@ -22,14 +22,14 @@ jobs:
           set -e
           
           FILE=".github/FILE.md"
-          COMMIT_LOOP_COUNT=30
+          COMMIT_LOOP_COUNT=5
 
           echo "Configuring Git..."
           git config --global user.name "$USERNAME"
           git config --global user.email "$EMAIL"
 
-          echo "Ensuring clean working directory..."
-          git reset --hard origin/main  # Force sync to remote state
+          echo "Pulling latest changes to ensure we start with the latest commit..."
+          git pull --rebase
 
           for ((i=1; i<=COMMIT_LOOP_COUNT; i++)); do
             echo "Iteration $i of $COMMIT_LOOP_COUNT"
@@ -60,10 +60,6 @@ jobs:
 
             echo "Committing changes..."
             git commit -m "Auto commit: updated commit number $NEXT_COUNT" --allow-empty
-
-            echo "Forcing pull to avoid conflicts..."
-            git fetch origin main
-            git reset --hard origin/main  # Ensures we're always in sync
 
             echo "Pushing changes..."
             git push
