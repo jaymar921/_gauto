@@ -1,4 +1,4 @@
-name: Jaymar921 auto commit
+name: Jaymar921 Auto Commit
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
         run: |
           set -e
           
-          FILE=".github/FILE.md"
+          FILES=(".github/FILE.md" "README.md")  # List of files to update
           COMMIT_LOOP_COUNT=35
 
           echo "Configuring Git..."
@@ -34,29 +34,32 @@ jobs:
           for ((i=1; i<=COMMIT_LOOP_COUNT; i++)); do
             echo "Iteration $i of $COMMIT_LOOP_COUNT"
 
-            echo "Checking for file: $FILE"
-            if [ ! -f "$FILE" ]; then
-              echo "File not found, creating $FILE..."
-              echo "# Git Auto Commit | Hidden File" > "$FILE"
-              echo "This file was added $(date +"%b %d, %Y")" >> "$FILE"
-              echo "" >> "$FILE"
-              echo "Just for fun and keeping my daily git commit active 🤪" >> "$FILE"
-              echo "" >> "$FILE"
-              echo "commit number: 1" >> "$FILE"
-            else
-              echo "File exists. Updating commit number..."
-              CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE" || echo "0")
-              echo "Current commit number: $CURRENT_COUNT"
-              NEXT_COUNT=$((CURRENT_COUNT + 1))
-              sed -i "/commit number: /c\commit number: $NEXT_COUNT" "$FILE"
-              echo "Updated commit number to: $NEXT_COUNT"
-            fi
+            for FILE in "${FILES[@]}"; do
+              echo "Checking for file: $FILE"
 
-            echo "Contents of the file:"
-            cat "$FILE"
+              if [ ! -f "$FILE" ]; then
+                echo "File not found, creating $FILE..."
+                echo "# Git Auto Commit | Hidden File" > "$FILE"
+                echo "This file was added $(date +"%b %d, %Y")" >> "$FILE"
+                echo "" >> "$FILE"
+                echo "Just for fun and keeping my daily git commit active 🤪" >> "$FILE"
+                echo "" >> "$FILE"
+                echo "commit number: 1" >> "$FILE"
+              else
+                echo "File exists. Updating commit number..."
+                CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE" || echo "0")
+                echo "Current commit number: $CURRENT_COUNT"
+                NEXT_COUNT=$((CURRENT_COUNT + 1))
+                sed -i "/commit number: /c\commit number: $NEXT_COUNT" "$FILE"
+                echo "Updated commit number to: $NEXT_COUNT"
+              fi
 
-            echo "Staging changes..."
-            git add "$FILE"
+              echo "Contents of the file:"
+              cat "$FILE"
+
+              echo "Staging changes..."
+              git add "$FILE"
+            done
 
             echo "Committing changes..."
             git commit -m "Auto commit: updated commit number $NEXT_COUNT" --allow-empty
