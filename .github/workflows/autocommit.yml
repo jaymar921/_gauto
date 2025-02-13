@@ -17,47 +17,54 @@ jobs:
       - name: Switch to main branch
         run: git checkout main
 
-      - name: Create file and commit
+      - name: Loop Commit Updates
         run: |
           set -e
-
+          
           FILE="README.md"
-          echo "Checking for file: $FILE"
-
-          if [ ! -f "$FILE" ]; then
-            echo "File not found, creating $FILE..."
-            echo "# Git Auto Commit" > "$FILE"
-            echo "Just for fun and keeping my daily git commit active 🤪" > "$FILE"
-            echo "commit number: 1" >> "$FILE"
-          else
-            echo "File exists. Updating commit number..."
-            CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE" || echo "0")
-            echo "Current commit number: $CURRENT_COUNT"
-            NEXT_COUNT=$((CURRENT_COUNT + 1))
-            sed -i "/commit number: /c\commit number: $NEXT_COUNT" "$FILE"
-            echo "Updated commit number to: $NEXT_COUNT"
-          fi
-
-          echo "Contents of the file:"
-          cat "$FILE"
-
+          COMMIT_LOOP_COUNT=30  
           echo "Configuring Git..."
           git config --global user.name "$USERNAME"
           git config --global user.email "$EMAIL"
 
-          echo "Pulling changes..."
-          git pull
+          for ((i=1; i<=COMMIT_LOOP_COUNT; i++)); do
+            echo "Iteration $i of $COMMIT_LOOP_COUNT"
 
-          echo "Staging changes..."
-          git add "$FILE" || echo "Nothing to stage"
+            echo "Checking for file: $FILE"
+            if [ ! -f "$FILE" ]; then
+              echo "File not found, creating $FILE..."
+              echo "# Git Auto Commit" > "$FILE"
+              echo "Just for fun and keeping my daily git commit active 🤪" > "$FILE"
+              echo "commit number: 1" >> "$FILE"
+            else
+              echo "File exists. Updating commit number..."
+              CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE" || echo "0")
+              echo "Current commit number: $CURRENT_COUNT"
+              NEXT_COUNT=$((CURRENT_COUNT + 1))
+              sed -i "/commit number: /c\commit number: $NEXT_COUNT" "$FILE"
+              echo "Updated commit number to: $NEXT_COUNT"
+            fi
 
-          echo "Committing changes..."
-          git commit -m "Auto commit: updated commit number $((CURRENT_COUNT + 1))" --allow-empty
+            echo "Contents of the file:"
+            cat "$FILE"
 
-          echo "Pushing changes..."
-          git push
+            echo "Pulling latest changes..."
+            git pull --rebase
 
-          echo "Current date and time: $(date +"%Y-%m-%d %H:%M:%S")"
+            echo "Staging changes..."
+            git add "$FILE"
+
+            echo "Committing changes..."
+            git commit -m "Auto commit: updated commit number $NEXT_COUNT" --allow-empty
+
+            echo "Pushing changes..."
+            git push
+
+            echo "Sleeping for 5 seconds before next commit..."
+            sleep 5 
+          done
+
+          echo "All commits completed successfully!"
         shell: bash
         env:
           USERNAME: ${{ secrets.USERNAME }}
