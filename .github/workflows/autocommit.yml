@@ -2,7 +2,7 @@ name: Jaymar921 Auto Commit
 
 on:
   schedule:
-    - cron: "*/2 * * * *" # Run every 2 minutes
+    - cron: "*/20 * * * *" # Run every 2 minutes
 
 jobs:
   commit:
@@ -22,7 +22,7 @@ jobs:
           set -e
           
           FILES=(".github/FILE.md" "README.md" ".github/FILE_2.md" ".github/FILE_3.md" ".github/FILE_4.md" ".github/FILE_5.md")  # List of files to update
-          COMMIT_LOOP_COUNT=15
+          COMMIT_LOOP_COUNT=25
 
           echo "Configuring Git..."
           git config --global user.name "$USERNAME"
@@ -67,8 +67,8 @@ jobs:
               echo "Pushing changes..."
               git push
 
-              echo "Sleeping for 1 seconds before next commit..."
-              sleep 1
+              echo "Sleeping for 3 seconds before next commit..."
+              sleep 3
             done
           done
 
