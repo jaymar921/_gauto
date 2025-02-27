@@ -1,5 +1,5 @@
 # Git Auto Commit
 
-Just for fun and keeping my daily git commit active 🤪
+Why commit daily if you can automate 😎
 
 commit number: 77114
