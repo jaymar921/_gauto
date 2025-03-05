@@ -22,7 +22,7 @@ jobs:
           set -e
           
           FILES=(".github/FILE.md" "README.md" ".github/FILE_2.md" ".github/FILE_3.md" ".github/FILE_4.md" ".github/FILE_5.md" ".github/FILE_6.md" ".github/FILE_7.md")  # List of files to update
-          COMMIT_LOOP_COUNT=150
+          COMMIT_LOOP_COUNT=550
 
           echo "Configuring Git..."
           git config --global user.name "$USERNAME"
@@ -60,8 +60,10 @@ jobs:
               git commit -m "Auto commit #$NEXT_COUNT : target - ($FILE)" --allow-empty
 
               echo "Sleeping for 1 seconds before next commit..."
-              sleep 1
+              echo "sleep 1"
             done
+
+            sleep 1
 
             echo "Pulling latest changes to ensure we start with the latest commit..."
             git pull --rebase
