@@ -2,7 +2,7 @@ name: Jaymar921 Auto Commit
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/5 * * * *"
 
 jobs:
   commit:
@@ -10,9 +10,9 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0 
+          fetch-depth: 2
 
       - name: Switch to main branch
         run: git checkout main
@@ -22,7 +22,7 @@ jobs:
           set -e
           
           FILES=(".github/FILE.md" "README.md" ".github/FILE_2.md" ".github/FILE_3.md" ".github/FILE_4.md" ".github/FILE_5.md" ".github/FILE_6.md" ".github/FILE_7.md")  # List of files to update
-          COMMIT_LOOP_COUNT=4555
+          COMMIT_LOOP_COUNT=3555
 
           echo "Configuring Git..."
           git config --global user.name "$USERNAME"
