@@ -1,8 +1,9 @@
 name: Jaymar921 Auto Commit
 
 on:
-  schedule:
-    - cron: "0 * * * *"
+  push: 
+    branches:
+      - main
 
 jobs:
   commit:
